@@ -1,0 +1,64 @@
+# Simple Docker Compose example
+#
+# Recommended file name:
+# docker-compose.yml
+#
+# If the file name is "docker-compose.yml":
+# docker compose up -d
+# docker compose down
+#
+# If the file name is "simple-docker-compose.yml":
+# docker compose -f simple-docker-compose.yml up -d
+# docker compose -f simple-docker-compose.yml down
+#
+# Check running containers:
+# docker compose ps
+#
+# View logs:
+# docker compose logs -f
+
+# Docker Compose file version
+# Defines which Compose specification to use
+version: "3.9"
+
+# Services = containers you want to run
+services:
+
+  # Service name (acts like container name)
+  app:
+    # build tells Docker Compose to build an image
+    # using a Dockerfile instead of pulling from Docker Hub
+    build: .
+
+    # build: . means:
+    # - "." → current directory
+    # - Docker will look for a file named "Dockerfile" in this directory
+
+    # If your Dockerfile has a DIFFERENT NAME
+    # Example: Dockerfile.dev
+    # Use the syntax below instead of "build: ."
+    #
+    # build:
+    #   context: .           # Path where Dockerfile exists
+    #   dockerfile: Dockerfile.dev  # Custom Dockerfile name
+
+    # Image name (optional if build is used)
+    image: my-node-app
+
+    # Container name (easier to manage than auto-generated names)
+    container_name: mynodeapp
+
+    # Port mapping: host_port:container_port
+    ports:
+      - "3000:3000"
+
+    # Environment variables inside container
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+    # Restart container automatically if it crashes
+    restart: always
+
+    # Command to run when container starts
+    command: npm start
